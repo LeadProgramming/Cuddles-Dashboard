@@ -1,27 +1,47 @@
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
-import Layout from '../components/layout';
-
-type Listing = {
-    name: string;
-    type: string;
-    color: string;
+import { ListingsHistory } from '../components/listings/ListingHistory';
+import { ListingsCreate } from '../components/listings/ListingsCreate';
+import { ListingsDelete } from '../components/listings/ListingsDelete';
+import { ListingsEditor } from '../components/listings/ListingsEditor';
+import { ListingsToolbar } from '../components/listings/ListingsToolbar';
+import { ListingsUpdate } from '../components/listings/ListingsUpdate';
+import { SideNav } from '../components/SideNav';
+const useStyles = makeStyles(() =>
+    createStyles({
+        content: {
+            float: 'right',
+            width: `calc(100% - 200px)`,
+        },
+    }),
+);
+export type ListingProps = {
+    navnames: any;
+    listings: any;
 };
-export default function Listings(): React.ReactNode {
+export default function Listings({ navNames }: ListingProps): React.ReactNode {
+    const classes = useStyles();
+    console.log(useSelector((state) => state.updatingListing));
     return (
-        <Layout>
+        <div>
             <Head>
                 <title>Cuddles | Listings</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Link href="/">
-                <a>Home</a>
-                <li></li>
-                <li></li>
-            </Link>
+            <SideNav navNames={navNames} />
+            <main className={classes.content}>
+                <ListingsToolbar />
+                <ListingsEditor />
+            </main>
             <a href="https://davidcodes.herokuapp.com/">Resume Page</a>
-        </Layout>
+            <ListingsCreate />
+            <ListingsUpdate />
+            <ListingsDelete />
+            {/* <ListingsHistory /> */}
+        </div>
     );
 }
 

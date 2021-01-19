@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
-export type NavBtnProps = {
+
+export type SideHeaderProps = {
     label: string;
     args: Args;
 };
@@ -12,6 +13,6 @@ export type Args = {
     disableFocusRipple: boolean;
 };
 
-export function NavBtn({ label, ...args }: NavBtnProps): React.ReactNode {
+export function NavBtn({ label, ...args }: SideHeaderProps): React.ReactNode {
     return <Button {...args}>{label}</Button>;
 }

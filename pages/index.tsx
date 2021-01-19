@@ -1,5 +1,6 @@
 import Head from 'next/head';
 
+// import SideNav from
 import styles from '../styles/Home.module.css';
 
 export default function Home(): React.ReactNode {
@@ -9,11 +10,9 @@ export default function Home(): React.ReactNode {
                 <title>Cuddles | Admin Dashboard</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Welcome to <a href="https://nextjs.org">Next.js!</a>
-                </h1>
+            <aside></aside>
+            <main>
+                <h1 className={styles.title}>Welcome to Cuddle&apos;s Admin Dashboard.</h1>
 
                 <p className={styles.description}>
                     Get started by editing <code className={styles.code}>pages/index.js</code>

@@ -11,6 +11,7 @@ Working on new tooling to improve developer workflow and codebase. My previous p
 | React Storybook |          |
 | TypeScript      |          |
 | Jest            |          |
+| React Hook Form |          |
 
 ## Plugins
 
