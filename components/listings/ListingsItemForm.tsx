@@ -1,37 +1,45 @@
 import { ErrorMessage } from '@hookform/error-message';
 import TextField from '@material-ui/core/TextField';
 import { DropzoneArea } from 'material-ui-dropzone';
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { ListingsError } from '../../components/listings/ListingsError';
-export function ListingsItemForm({ picture, setPictures }) {
-    const { register, errors, formState } = useFormContext();
-    const { isSubmitted } = formState;
-
+export function ListingsItemForm({ dfVal }) {
+    const { control, register, errors, setValue } = useFormContext();
+    console.log(dfVal);
     return (
         <>
-            {/* hard-coded temporary solution */}
-            {picture.length === 0 && isSubmitted && <ListingsError> Requires Picture(s) </ListingsError>}
+            {/* // displays error messages up top. */}
+            {/* {Object.entries(errors).map(([key, value]) => (
+                <ErrorMessage key={value.message} errors={errors} name={key} as={ListingsError}>
+                    {value.message}
+                </ErrorMessage>
+            ))} */}
 
-            {
-                // displays error messages up top.
-                /* {Object.entries(errors).map(([key, value]) => (
-       <ErrorMessage key={value.message} errors={errors} name={key} as={ListingsError}>
-           {value.message}
-       </ErrorMessage>
-   ))} */
-            }
-            <DropzoneArea
-                filesLimit={6}
-                onChange={(files) => {
-                    setPictures(files);
-                }}
-                dropzoneText={'Upload pictures here.'}
-                showPreviews
-                showPreviewsInDropzone={false}
-                showFileNamesInPreview
-                // useChipsForPreview
+            <ErrorMessage
+                errors={errors}
+                name={'img'}
+                render={({ message }) => <ListingsError>{message}</ListingsError>}
+            />
+            <Controller
+                name={'img'}
+                control={control}
+                rules={{ required: 'Requires Listing image(s)' }}
+                render={() => (
+                    <DropzoneArea
+                        filesLimit={6}
+                        onChange={(files) => {
+                            //validation needs work.
+                            setValue('img', files);
+                        }}
+                        dropzoneText={'Upload pictures here.'}
+                        showPreviews
+                        showPreviewsInDropzone={false}
+                        showFileNamesInPreview
+                        initialFiles={dfVal?.img?.split(',')}
+                        // useChipsForPreview
+                    />
+                )}
             />
             <ErrorMessage
                 errors={errors}
@@ -46,6 +54,7 @@ export function ListingsItemForm({ picture, setPictures }) {
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                defaultValue={dfVal?.name}
             />
             <ErrorMessage
                 errors={errors}
@@ -65,6 +74,7 @@ export function ListingsItemForm({ picture, setPictures }) {
                 margin="normal"
                 type="number"
                 inputProps={{ min: '0.00', step: '0.01' }}
+                defaultValue={dfVal?.price}
             />
             <ErrorMessage
                 errors={errors}
@@ -84,6 +94,7 @@ export function ListingsItemForm({ picture, setPictures }) {
                 margin="normal"
                 type="number"
                 inputProps={{ min: '0' }}
+                defaultValue={dfVal?.quantity}
             />
             <ErrorMessage
                 errors={errors}
@@ -100,6 +111,7 @@ export function ListingsItemForm({ picture, setPictures }) {
                 multiline
                 rows={5}
                 margin="normal"
+                defaultValue={dfVal?.details}
             />
             <ErrorMessage
                 errors={errors}
@@ -116,7 +128,8 @@ export function ListingsItemForm({ picture, setPictures }) {
                 multiline
                 margin="normal"
                 // onKeyPress={handleTags}
-                helperText={'Tags seperated by space.'}
+                helperText={'Tags seperated by comma.'}
+                defaultValue={dfVal?.tags}
             />
         </>
     );

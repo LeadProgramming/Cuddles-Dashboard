@@ -4,29 +4,26 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useState } from 'react';
-export type ListingsViewProps = {
-    isOpen: boolean;
-};
-export function ListingsView({ isOpen }: ListingsViewProps): React.ReactNode {
-    const [open, setOpen] = useState(isOpen);
+import { useDispatch, useSelector } from 'react-redux';
+
+import { viewListing } from '../../redux/listings/listingsSlice';
+// export type ListingsViewProps = {
+//     isOpen: boolean;
+// };
+export function ListingsView(): React.ReactNode {
+    const open = useSelector((state) => state.listings.viewingListing);
+    const item = useSelector((state) => state.listings.currentListing);
+    const dispatch = useDispatch();
     function handleClose() {
-        setOpen(false);
+        dispatch(viewListing());
     }
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="View a Listing">
-            <DialogTitle id="">View Listing</DialogTitle>
+            <DialogTitle id="">{item.name}</DialogTitle>
             <DialogContent>
-                <DialogContentText>View a listing</DialogContentText>
+                <DialogContentText>SKU#:{item.id}</DialogContentText>
+                <img src={item.img} alt={'listing pictures'} width={350} />
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="default">
-                    Cancel
-                </Button>
-                <Button onClick={handleClose} color="default">
-                    View
-                </Button>
-            </DialogActions>
         </Dialog>
     );
 }

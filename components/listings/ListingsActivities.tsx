@@ -5,17 +5,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useState } from 'react';
-export type ListingsHistoryProps = {
-    isOpen: boolean;
-};
-export function ListingsHistory({ isOpen }: ListingsHistoryProps): React.ReactNode {
-    const [open, setOpen] = useState(isOpen);
+import { useDispatch, useSelector } from 'react-redux';
+// import {}
+export function ListingsActivities(): React.ReactNode {
+    const [open, setOpen] = useState(false);
     function handleClose() {
         setOpen(false);
     }
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="Create a Listing">
-            <DialogTitle id="">History</DialogTitle>
+            <DialogTitle id="">Recent Activities</DialogTitle>
             <DialogContent>
                 <DialogContentText>Show previous activities</DialogContentText>
             </DialogContent>

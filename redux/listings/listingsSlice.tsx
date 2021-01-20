@@ -45,27 +45,43 @@ export const listingsSlice = createSlice({
         deletingListing: false,
         historyListing: false,
         checkedListing: [],
+        currentListing: {},
+        activities: [],
     },
     reducers: {
         changeListingMode(state) {
             state.listingMode = !state.listingMode;
         },
-        createListing(state) {
+        createListing(state, action) {
             state.creatingListing = !state.creatingListing;
+            //this will turn off your dialog as well.
+            if (action.payload) {
+                state.listings.push(Object.fromEntries(action.payload));
+            }
         },
-        viewListing(state) {
+        viewListing(state, action) {
             state.viewingListing = !state.viewingListing;
+            if (action.payload) {
+                state.currentListing = action.payload;
+            }
         },
-        updateListing(state) {
+        updateListing(state, action) {
             state.updatingListing = !state.updatingListing;
+            if (action.payload) {
+                state.currentListing = action.payload;
+            }
+        },
+        modifyListing(state, action) {
+            state.updatingListing = !state.updatingListing;
+            if (action.payload) {
+                //very ugly code
+                const idx = state.listings.map((i) => i.id).indexOf(Number(Object.fromEntries(action.payload).id));
+                state.listings[idx] = Object.fromEntries(action.payload);
+            }
         },
         deleteListing(state) {
             state.deletingListing = !state.deletingListing;
         },
-        addListing(state, action) {
-            state.listings.push(Object.fromEntries(action.payload));
-        },
-        // checkHistoryListing(state) {},
         checkListing(state, action) {
             const found = [];
             //get all the selected listings for recycling.
@@ -95,20 +111,18 @@ export const listingsSlice = createSlice({
         removeListing(state, action) {
             state.listings = state.listings.filter((itm) => itm.id !== action.payload.id);
         },
-        // modifyListing(state, action) {},
     },
 });
 export const {
-    addListing,
     changeListingMode,
     createListing,
     viewListing,
     updateListing,
+    modifyListing,
     deleteListing,
     checkListing,
     recycleListing,
     removeListing,
-    modifyListing,
 } = listingsSlice.actions;
 
 export default listingsSlice.reducer;

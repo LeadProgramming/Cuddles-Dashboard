@@ -4,9 +4,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { removeListing, updateListing } from '../../redux/listings/listingsSlice';
+import { removeListing, updateListing, viewListing } from '../../redux/listings/listingsSlice';
 export function ListingsEdit(props) {
     const [open, setOpen] = useState(null);
     const dispatch = useDispatch();
@@ -15,6 +15,9 @@ export function ListingsEdit(props) {
     }
     function handleClose() {
         setOpen(null);
+    }
+    function handleViewListing() {
+        dispatch(viewListing(props));
     }
     function handleUpdateListing() {
         dispatch(updateListing(props));
@@ -49,7 +52,9 @@ export function ListingsEdit(props) {
                         horizontal: 'center',
                     }}
                 >
-                    <MenuItem value={'viewListing'}>View Listing</MenuItem>
+                    <MenuItem value={'viewListing'} onClick={handleViewListing}>
+                        View Listing
+                    </MenuItem>
                     <MenuItem value={'updateListing'} onClick={handleUpdateListing}>
                         Update Listing
                     </MenuItem>

@@ -1,13 +1,6 @@
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import { ColDef, DataGrid } from '@material-ui/data-grid';
-import { createNextState } from '@reduxjs/toolkit';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { checkListing } from '../../redux/listings/listingsSlice';
@@ -36,7 +29,8 @@ export function ListingsEditor(): React.ReactNode {
             width: 100,
             sortable: false,
             renderCell: function render(itm) {
-                return <img src={itm.value} alt={'Cuddles'} width={75} height={75} />;
+                // first upload only.
+                return <img src={itm.value.split(',')[0]} alt={'Cuddles'} width={75} height={75} />;
             },
         },
         { field: 'id', headerName: 'SKU', width: 90 },

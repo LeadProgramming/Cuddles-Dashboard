@@ -1,14 +1,14 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
 
-import { ListingsHistory } from '../components/listings/ListingHistory';
+import { ListingsActivities } from '../components/listings/ListingsActivities';
 import { ListingsCreate } from '../components/listings/ListingsCreate';
 import { ListingsDelete } from '../components/listings/ListingsDelete';
 import { ListingsEditor } from '../components/listings/ListingsEditor';
 import { ListingsToolbar } from '../components/listings/ListingsToolbar';
 import { ListingsUpdate } from '../components/listings/ListingsUpdate';
+import { ListingsView } from '../components/listings/ListingsView';
 import { SideNav } from '../components/SideNav';
 const useStyles = makeStyles(() =>
     createStyles({
@@ -24,7 +24,6 @@ export type ListingProps = {
 };
 export default function Listings({ navNames }: ListingProps): React.ReactNode {
     const classes = useStyles();
-    console.log(useSelector((state) => state.updatingListing));
     return (
         <div>
             <Head>
@@ -37,10 +36,11 @@ export default function Listings({ navNames }: ListingProps): React.ReactNode {
                 <ListingsEditor />
             </main>
             <a href="https://davidcodes.herokuapp.com/">Resume Page</a>
+            <ListingsActivities />
             <ListingsCreate />
+            <ListingsView />
             <ListingsUpdate />
             <ListingsDelete />
-            {/* <ListingsHistory /> */}
         </div>
     );
 }
