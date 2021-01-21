@@ -6,14 +6,24 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createListing } from '../../redux/listings/listingsSlice';
+import { createDialog, createListing, recordState } from '../../redux/listings/listingsSlice';
 import { ListingsItemForm } from './ListingsItemForm';
 // export type ListingsCreateProps = {};
 export function ListingsCreate(): React.ReactNode {
     const dispatch = useDispatch();
-    const open = useSelector((state) => state.listings.creatingListing);
+    const open = useSelector((state) => state.listings.createMode);
     const listing = useSelector((state) => state.listings.listings);
-    const methods = useForm();
+    const methods = useForm({
+        defaultValues: {
+            name: 'Kai',
+            details:
+                'The ultimate dancing teddy bear. He is the lead dancer for Bexo. He will hypotnize with his dance moves. ',
+            quantity: 100,
+            price: 20,
+            tags: 'Dancing, Teddy Bear, Bexo',
+            img: [],
+        },
+    });
     const onSubmit = (values) => {
         // needed for building apis
         const formData = new FormData();
@@ -30,10 +40,11 @@ export function ListingsCreate(): React.ReactNode {
             'img',
             values.img.map((itm) => URL.createObjectURL(itm)),
         );
+        dispatch(recordState());
         dispatch(createListing(Array.from(formData)));
     };
     function handleClose() {
-        dispatch(createListing());
+        dispatch(createDialog());
     }
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="Create a Listing">

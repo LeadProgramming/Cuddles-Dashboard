@@ -6,26 +6,38 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import {}
+
+import { actDialog, redoListing, undoListing } from '../../redux/listings/listingsSlice';
 export function ListingsActivities(): React.ReactNode {
-    const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
+    const open = useSelector((state) => state.listings.actMode);
+    const activities = useSelector((state) => state.listings.activities);
     function handleClose() {
-        setOpen(false);
+        dispatch(actDialog());
+    }
+    function handleUndo() {
+        dispatch(undoListing());
+    }
+    function handleRedo() {
+        dispatch(redoListing());
     }
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="Create a Listing">
             <DialogTitle id="">Recent Activities</DialogTitle>
             <DialogContent>
-                <DialogContentText>Show previous activities</DialogContentText>
+                {/* {activities.map((act) => {
+                    // return <DialogContentText key={}>act</DialogContentText>;
+                })} */}
             </DialogContent>
-            <DialogActions>
+            {/* <DialogActions>
                 <Button onClick={handleClose} color="default">
                     Cancel
                 </Button>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleUndo} color="default">
                     Undo
                 </Button>
-            </DialogActions>
+                <Button onClick={handleRedo}>Redo</Button>
+            </DialogActions> */}
         </Dialog>
     );
 }

@@ -6,12 +6,19 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import AppsIcon from '@material-ui/icons/Apps';
 import DeleteIcon from '@material-ui/icons/Delete';
-import HistoryIcon from '@material-ui/icons/History';
 import ListIcon from '@material-ui/icons/List';
+import RedoIcon from '@material-ui/icons/Redo';
+import UndoIcon from '@material-ui/icons/Undo';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changeListingMode, createListing, deleteListing } from '../../redux/listings/listingsSlice';
+import {
+    changeWallMode,
+    createDialog,
+    deleteDialog,
+    redoListing,
+    undoListing,
+} from '../../redux/listings/listingsSlice';
 // export type ListingsToolbarProps = {
 //     sortBy: string[];
 //     types: string[];
@@ -22,31 +29,38 @@ export function ListingsToolbar() {
         alternative: gallery
     */
     const dispatch = useDispatch();
-    const mode = useSelector((state) => state.listings.listingMode);
-    function handleMode() {
-        dispatch(changeListingMode());
-    }
+    const mode = useSelector((state) => state.listings.wallMode);
+    const activities = useSelector((state) => state.listings.activities);
+    const undoed = useSelector((state) => state.listings.recall);
+
     return (
         <AppBar position="static" color="primary">
             <Toolbar>
                 <Typography variant="h6" align="left">
                     Listings
                 </Typography>
+                {activities.length > 0 && (
+                    <IconButton color="inherit" aria-label="Undo">
+                        <UndoIcon fontSize="large" onClick={dispatch.bind(null, undoListing())} />
+                    </IconButton>
+                )}
+                {undoed.length > 0 && (
+                    <IconButton color="inherit" aria-label="Redo">
+                        <RedoIcon fontSize="large" onClick={dispatch.bind(null, redoListing())} />
+                    </IconButton>
+                )}
                 <IconButton color="inherit" aria-label="layout">
                     {mode ? (
-                        <AppsIcon fontSize="large" onClick={handleMode} />
+                        <AppsIcon fontSize="large" onClick={dispatch.bind(null, changeWallMode())} />
                     ) : (
-                        <ListIcon fontSize="large" onClick={handleMode} />
+                        <ListIcon fontSize="large" onClick={dispatch.bind(null, changeWallMode())} />
                     )}
                 </IconButton>
                 <IconButton color="inherit" aria-label="New Listing">
-                    <AddIcon fontSize="large" onClick={dispatch.bind(null, createListing())} />
+                    <AddIcon fontSize="large" onClick={dispatch.bind(null, createDialog())} />
                 </IconButton>
                 <IconButton color="inherit" aria-label="Delete Listing">
-                    <DeleteIcon fontSize="large" onClick={dispatch.bind(null, deleteListing())} />
-                </IconButton>
-                <IconButton color="inherit" aria-label="History">
-                    <HistoryIcon fontSize="large" />
+                    <DeleteIcon fontSize="large" onClick={dispatch.bind(null, deleteDialog())} />
                 </IconButton>
             </Toolbar>
         </AppBar>

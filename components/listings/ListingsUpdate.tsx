@@ -6,15 +6,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { modifyListing, updateListing } from '../../redux/listings/listingsSlice';
+import { modifyListing, updateDialog } from '../../redux/listings/listingsSlice';
 import { ListingsItemForm } from './ListingsItemForm';
 
 export type ListingsUpdateProps = {
     isOpen: boolean;
 };
 export function ListingsUpdate(): React.ReactNode {
-    const open = useSelector((state) => state.listings.updatingListing);
-    const currRow = useSelector((state) => state.listings.currentListing);
+    const open = useSelector((state) => state.listings.updateMode);
+    const currRow = useSelector((state) => state.listings.curr);
     const dispatch = useDispatch();
     const methods = useForm();
     const onSubmit = (values) => {
@@ -35,7 +35,7 @@ export function ListingsUpdate(): React.ReactNode {
         dispatch(modifyListing(Array.from(formData)));
     };
     function handleClose() {
-        dispatch(updateListing());
+        dispatch(updateDialog());
     }
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="Create a Listing">

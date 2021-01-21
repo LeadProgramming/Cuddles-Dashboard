@@ -1,17 +1,17 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ListingsEditor, ListingsEditorProps } from '../../../components/listings/ListingsEditor';
+import { ListingsWall, ListingsWallProps } from '../../../components/listings/ListingsWall';
 
 export default {
-    title: 'components/listings/ListingsEditor',
-    component: ListingsEditor,
+    title: 'components/listings/ListingsWall',
+    component: ListingsWall,
     // argTypes: {
     //     backgroundColor: { control: 'color' },
     // },
 } as Meta;
 
-const Template: Story<ListingsEditorProps> = (args) => <ListingsEditor {...args} />;
+const Template: Story<ListingsWallProps> = (args) => <ListingsWall {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

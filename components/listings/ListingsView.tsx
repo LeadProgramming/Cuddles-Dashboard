@@ -6,16 +6,16 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { viewListing } from '../../redux/listings/listingsSlice';
+import { viewDialog } from '../../redux/listings/listingsSlice';
 // export type ListingsViewProps = {
 //     isOpen: boolean;
 // };
 export function ListingsView(): React.ReactNode {
-    const open = useSelector((state) => state.listings.viewingListing);
-    const item = useSelector((state) => state.listings.currentListing);
+    const open = useSelector((state) => state.listings.viewMode);
+    const item = useSelector((state) => state.listings.curr);
     const dispatch = useDispatch();
     function handleClose() {
-        dispatch(viewListing());
+        dispatch(viewDialog());
     }
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="View a Listing">

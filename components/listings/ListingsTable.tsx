@@ -13,13 +13,13 @@ import { ListingsEdit } from './ListingsEdit';
 //     sortable?: boolean;
 //     renderCell?: React.ReactNode;
 // };
-export type ListingsEditorProps = {
+export type ListingsTableProps = {
     sortBy: string[];
     types: string[];
     listings: any;
 };
 
-export function ListingsEditor(): React.ReactNode {
+export function ListingsTable(): React.ReactNode {
     const listings = useSelector((state) => state.listings.listings);
     const dispatch = useDispatch();
     const cols: ColDef[] = [

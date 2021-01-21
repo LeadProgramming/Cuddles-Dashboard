@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 export const listingsSlice = createSlice({
     name: 'listings',
@@ -38,49 +38,45 @@ export const listingsSlice = createSlice({
                 quantity: 100,
             },
         ],
-        listingMode: false,
-        creatingListing: false,
-        viewingListing: false,
-        updatingListing: false,
-        deletingListing: false,
-        historyListing: false,
-        checkedListing: [],
-        currentListing: {},
+        wallMode: false,
+        createMode: false,
+        viewMode: false,
+        updateMode: false,
+        deleteMode: false,
+        actMode: false,
+        checked: [],
+        curr: {},
         activities: [],
+        recall: [],
     },
     reducers: {
-        changeListingMode(state) {
-            state.listingMode = !state.listingMode;
+        changeWallMode(state) {
+            state.wallMode = !state.wallMode;
         },
-        createListing(state, action) {
-            state.creatingListing = !state.creatingListing;
-            //this will turn off your dialog as well.
+        actDialog(state) {
+            state.actMode = !state.actMode;
+        },
+        createDialog(state) {
+            state.createMode = !state.createMode;
+        },
+        viewDialog(state, action) {
+            state.viewMode = !state.viewMode;
+            state.curr = action.payload;
+        },
+        updateDialog(state, action) {
+            state.updateMode = !state.updateMode;
             if (action.payload) {
-                state.listings.push(Object.fromEntries(action.payload));
+                state.curr = action.payload;
             }
         },
-        viewListing(state, action) {
-            state.viewingListing = !state.viewingListing;
-            if (action.payload) {
-                state.currentListing = action.payload;
-            }
-        },
-        updateListing(state, action) {
-            state.updatingListing = !state.updatingListing;
-            if (action.payload) {
-                state.currentListing = action.payload;
-            }
+        deleteDialog(state) {
+            state.deleteMode = !state.deleteMode;
         },
         modifyListing(state, action) {
-            state.updatingListing = !state.updatingListing;
-            if (action.payload) {
-                //very ugly code
-                const idx = state.listings.map((i) => i.id).indexOf(Number(Object.fromEntries(action.payload).id));
-                state.listings[idx] = Object.fromEntries(action.payload);
-            }
-        },
-        deleteListing(state) {
-            state.deletingListing = !state.deletingListing;
+            //very ugly code
+            const idx = state.listings.map((i) => i.id).indexOf(Number(Object.fromEntries(action.payload).id));
+            state.listings[idx] = Object.fromEntries(action.payload);
+            console.log(current(state.listings));
         },
         checkListing(state, action) {
             const found = [];
@@ -88,13 +84,13 @@ export const listingsSlice = createSlice({
             for (const i of action.payload) {
                 found.push(state.listings.find((itm) => itm.id == i));
             }
-            state.checkedListing = found;
+            state.checked = found;
         },
         recycleListing(state) {
             const tmp = [];
             for (const i of state.listings) {
                 let dontKeep = false;
-                for (const j of state.checkedListing) {
+                for (const j of state.checked) {
                     if (i.id === j.id) {
                         dontKeep = true;
                         break;
@@ -105,24 +101,44 @@ export const listingsSlice = createSlice({
                 }
             }
             state.listings = tmp;
-            state.checkedListing = [];
-            state.deletingListing = false;
+            state.checked = [];
+            state.deleteMode = false;
+        },
+        createListing(state, action) {
+            state.listings.push(Object.fromEntries(action.payload));
         },
         removeListing(state, action) {
             state.listings = state.listings.filter((itm) => itm.id !== action.payload.id);
         },
+        recordState(state) {
+            state.activities.push(state.listings);
+            state.recall = [];
+        },
+        undoListing(state) {
+            state.recall.push(state.listings);
+            state.listings = state.activities.pop();
+        },
+        redoListing(state) {
+            state.activities.push(state.listings);
+            state.listings = state.recall.pop();
+        },
     },
 });
 export const {
-    changeListingMode,
-    createListing,
-    viewListing,
-    updateListing,
+    changeWallMode,
+    createDialog,
+    actDialog,
+    viewDialog,
+    updateDialog,
+    deleteDialog,
     modifyListing,
-    deleteListing,
     checkListing,
     recycleListing,
+    createListing,
     removeListing,
+    recordState,
+    undoListing,
+    redoListing,
 } = listingsSlice.actions;
 
 export default listingsSlice.reducer;

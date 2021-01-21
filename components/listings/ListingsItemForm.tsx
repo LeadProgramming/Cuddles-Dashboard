@@ -6,7 +6,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { ListingsError } from '../../components/listings/ListingsError';
 export function ListingsItemForm({ dfVal }) {
     const { control, register, errors, setValue } = useFormContext();
-    console.log(dfVal);
     return (
         <>
             {/* // displays error messages up top. */}

@@ -8,18 +8,19 @@ import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteListing, recycleListing } from '../../redux/listings/listingsSlice';
+import { deleteDialog, recordState, recycleListing } from '../../redux/listings/listingsSlice';
 export type ListingsDeleteProps = {
     isOpen: boolean;
 };
 export function ListingsDelete(): React.ReactNode {
-    const checked = useSelector((state) => state.listings.checkedListing);
-    const open = useSelector((state) => state.listings.deletingListing);
+    const checked = useSelector((state) => state.listings.checked);
+    const open = useSelector((state) => state.listings.deleteMode);
     const dispatch = useDispatch();
     function handleClose() {
-        dispatch(deleteListing());
+        dispatch(deleteDialog());
     }
     function handleDelete() {
+        dispatch(recordState());
         dispatch(recycleListing());
     }
     function Deletable() {

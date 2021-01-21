@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { removeListing, updateListing, viewListing } from '../../redux/listings/listingsSlice';
+import { recordState, removeListing, updateDialog, viewDialog } from '../../redux/listings/listingsSlice';
 export function ListingsEdit(props) {
     const [open, setOpen] = useState(null);
     const dispatch = useDispatch();
@@ -17,12 +17,14 @@ export function ListingsEdit(props) {
         setOpen(null);
     }
     function handleViewListing() {
-        dispatch(viewListing(props));
+        dispatch(viewDialog(props));
     }
     function handleUpdateListing() {
-        dispatch(updateListing(props));
+        dispatch(recordState());
+        dispatch(updateDialog(props));
     }
     function handleRemoveListing() {
+        dispatch(recordState());
         dispatch(removeListing(props));
     }
     return (

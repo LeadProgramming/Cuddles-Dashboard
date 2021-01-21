@@ -1,14 +1,16 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 import { ListingsActivities } from '../components/listings/ListingsActivities';
 import { ListingsCreate } from '../components/listings/ListingsCreate';
 import { ListingsDelete } from '../components/listings/ListingsDelete';
-import { ListingsEditor } from '../components/listings/ListingsEditor';
+import { ListingsTable } from '../components/listings/ListingsTable';
 import { ListingsToolbar } from '../components/listings/ListingsToolbar';
 import { ListingsUpdate } from '../components/listings/ListingsUpdate';
 import { ListingsView } from '../components/listings/ListingsView';
+import { ListingsWall } from '../components/listings/ListingsWall';
 import { SideNav } from '../components/SideNav';
 const useStyles = makeStyles(() =>
     createStyles({
@@ -24,6 +26,7 @@ export type ListingProps = {
 };
 export default function Listings({ navNames }: ListingProps): React.ReactNode {
     const classes = useStyles();
+    const wallMode = useSelector((state) => state.listings.wallMode);
     return (
         <div>
             <Head>
@@ -33,10 +36,10 @@ export default function Listings({ navNames }: ListingProps): React.ReactNode {
             <SideNav navNames={navNames} />
             <main className={classes.content}>
                 <ListingsToolbar />
-                <ListingsEditor />
+                {wallMode ? <ListingsWall /> : <ListingsTable />}
             </main>
             <a href="https://davidcodes.herokuapp.com/">Resume Page</a>
-            <ListingsActivities />
+            {/* <ListingsActivities /> */}
             <ListingsCreate />
             <ListingsView />
             <ListingsUpdate />
