@@ -1,4 +1,4 @@
-import { CardActions, Typography } from '@material-ui/core';
+import { CardActions, Checkbox, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -8,11 +8,11 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Rating from '@material-ui/lab/Rating';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { checkListing } from '../../redux/listings/listingsSlice';
 import { ListingsEdit } from './ListingsEdit';
-
 // type Listings = {
 //     field?: string;
 //     headerName?: string;
@@ -29,6 +29,7 @@ export type ListingsWallProps = {
 export function ListingsWall(): React.ReactNode {
     const listings = useSelector((state) => state.listings.listings);
     const dispatch = useDispatch();
+    const [selected, setSelected] = useState([]);
     const cols: ColDef[] = [
         {
             field: 'img',
@@ -58,9 +59,17 @@ export function ListingsWall(): React.ReactNode {
         },
     ];
     const rows = [...listings];
-    const selectRow = (e) => {
-        dispatch(checkListing(e.rowIds));
+    const selectItm = (e) => {
+        const idx = selected.indexOf(e.target.value);
+        if (idx == -1) {
+            setSelected((prv) => prv.concat(e.target.value));
+        } else {
+            setSelected((prv) => prv.filter((itm) => itm != e.target.value));
+        }
     };
+    useEffect(() => {
+        dispatch(checkListing(selected));
+    }, [selected]);
     return (
         <Box height="80vh" width="100%">
             <Grid container spacing={1} direction="row" justify="center" wrap="nowrap" style={{ margin: '5px 0' }}>
@@ -68,6 +77,7 @@ export function ListingsWall(): React.ReactNode {
                     return (
                         <Grid item key={itm.name}>
                             <Card variant="outlined">
+                                {/* <Checkbox value={itm.id} onChange={selectItm} color="secondary" /> */}
                                 <CardMedia
                                     title={itm.name}
                                     image={itm.img.split(',')[0]}
@@ -109,7 +119,7 @@ export function ListingsWall(): React.ReactNode {
                                         ))}
                                     </Typography> */}
                                 <CardActions style={{ justifyContent: 'center' }}>
-                                    <ListingsEdit />
+                                    <ListingsEdit {...itm} />
                                 </CardActions>
                             </Card>
                         </Grid>

@@ -8,9 +8,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { actDialog, redoListing, undoListing } from '../../redux/listings/listingsSlice';
-export function ListingsActivities(): React.ReactNode {
+type openState = {
+    actMode: boolean;
+};
+export const ListingsActivities: React.FunctionComponent = () => {
     const dispatch = useDispatch();
-    const open = useSelector((state) => state.listings.actMode);
+    const open = useSelector((state: openState) => state.listings.actMode);
     const activities = useSelector((state) => state.listings.activities);
     function handleClose() {
         dispatch(actDialog());
@@ -40,4 +43,4 @@ export function ListingsActivities(): React.ReactNode {
             </DialogActions> */}
         </Dialog>
     );
-}
+};

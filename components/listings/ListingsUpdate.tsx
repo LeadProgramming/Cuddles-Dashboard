@@ -33,6 +33,7 @@ export function ListingsUpdate(): React.ReactNode {
             values.img.map((itm) => URL.createObjectURL(itm)),
         );
         dispatch(modifyListing(Array.from(formData)));
+        handleClose();
     };
     function handleClose() {
         dispatch(updateDialog());

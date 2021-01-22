@@ -42,6 +42,7 @@ export function ListingsCreate(): React.ReactNode {
         );
         dispatch(recordState());
         dispatch(createListing(Array.from(formData)));
+        handleClose();
     };
     function handleClose() {
         dispatch(createDialog());

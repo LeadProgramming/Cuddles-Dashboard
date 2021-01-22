@@ -1,5 +1,6 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
+import { listing, listingsState } from './listingsTypes';
 export const listingsSlice = createSlice({
     name: 'listings',
     initialState: {
@@ -48,7 +49,7 @@ export const listingsSlice = createSlice({
         curr: {},
         activities: [],
         recall: [],
-    },
+    } as listingsState,
     reducers: {
         changeWallMode(state) {
             state.wallMode = !state.wallMode;
@@ -59,11 +60,11 @@ export const listingsSlice = createSlice({
         createDialog(state) {
             state.createMode = !state.createMode;
         },
-        viewDialog(state, action) {
+        viewDialog(state, action: PayloadAction<listing>) {
             state.viewMode = !state.viewMode;
-            state.curr = action.payload;
+            if (action.payload) state.curr = action.payload;
         },
-        updateDialog(state, action) {
+        updateDialog(state, action: PayloadAction<listing>) {
             state.updateMode = !state.updateMode;
             if (action.payload) {
                 state.curr = action.payload;
@@ -72,14 +73,14 @@ export const listingsSlice = createSlice({
         deleteDialog(state) {
             state.deleteMode = !state.deleteMode;
         },
-        modifyListing(state, action) {
+        modifyListing(state, action: PayloadAction<Iterable<readonly any[]>>) {
             //very ugly code
             const idx = state.listings.map((i) => i.id).indexOf(Number(Object.fromEntries(action.payload).id));
             state.listings[idx] = Object.fromEntries(action.payload);
-            console.log(current(state.listings));
         },
-        checkListing(state, action) {
+        checkListing(state, action: PayloadAction<number[]>) {
             const found = [];
+            //material ui api is problematic
             //get all the selected listings for recycling.
             for (const i of action.payload) {
                 found.push(state.listings.find((itm) => itm.id == i));
@@ -104,10 +105,10 @@ export const listingsSlice = createSlice({
             state.checked = [];
             state.deleteMode = false;
         },
-        createListing(state, action) {
+        createListing(state, action: PayloadAction<Iterable<readonly any[]>>) {
             state.listings.push(Object.fromEntries(action.payload));
         },
-        removeListing(state, action) {
+        removeListing(state, action: PayloadAction<listing>) {
             state.listings = state.listings.filter((itm) => itm.id !== action.payload.id);
         },
         recordState(state) {
