@@ -25,9 +25,10 @@ type NavNames = {
 };
 export type SideNavProps = {
     navNames: NavNames[];
+    children: React.ReactNode;
 };
 
-export function SideNav({ navNames }: SideNavProps): React.ReactNode {
+export const SideNav: React.FunctionComponent = ({ navNames }: SideNavProps) => {
     const classes = useStyles();
     const [open, setOpen] = useState<boolean[]>(navNames.map(() => false));
     const handleOpen = (i: number) => {
@@ -72,4 +73,4 @@ export function SideNav({ navNames }: SideNavProps): React.ReactNode {
             </List>
         </Drawer>
     );
-}
+};

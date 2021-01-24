@@ -5,16 +5,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { deleteDialog, recordState, recycleListing } from '../../redux/listings/listingsSlice';
-export type ListingsDeleteProps = {
-    isOpen: boolean;
-};
-export function ListingsDelete(): React.ReactNode {
-    const checked = useSelector((state) => state.listings.checked);
-    const open = useSelector((state) => state.listings.deleteMode);
+import { RootState } from '../../redux/store';
+
+export const ListingsDelete: React.FunctionComponent = () => {
+    const checked = useSelector((state: RootState) => state.listings.checked);
+    const open = useSelector((state: RootState) => state.listings.deleteMode);
     const dispatch = useDispatch();
     function handleClose() {
         dispatch(deleteDialog());
@@ -70,4 +68,4 @@ export function ListingsDelete(): React.ReactNode {
             {checked.length ? <Deletable /> : <UnDeletable />}
         </Dialog>
     );
-}
+};

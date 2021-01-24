@@ -39,7 +39,7 @@ export const listingsSlice = createSlice({
                 quantity: 100,
             },
         ],
-        wallMode: false,
+        wallMode: 'table',
         createMode: false,
         viewMode: false,
         updateMode: false,
@@ -51,8 +51,8 @@ export const listingsSlice = createSlice({
         recall: [],
     } as listingsState,
     reducers: {
-        changeWallMode(state) {
-            state.wallMode = !state.wallMode;
+        changeWallMode(state, action: PayloadAction<'table' | 'wall' | 'drop'>) {
+            state.wallMode = action.payload;
         },
         actDialog(state) {
             state.actMode = !state.actMode;

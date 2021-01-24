@@ -19,19 +19,20 @@ import {
     redoListing,
     undoListing,
 } from '../../redux/listings/listingsSlice';
+import { RootState } from '../../redux/store';
 // export type ListingsToolbarProps = {
 //     sortBy: string[];
 //     types: string[];
 // };
-export function ListingsToolbar() {
+export const ListingsToolbar: React.FunctionComponent = () => {
     /*
         default: list mode
         alternative: gallery
     */
     const dispatch = useDispatch();
-    const mode = useSelector((state) => state.listings.wallMode);
-    const activities = useSelector((state) => state.listings.activities);
-    const undoed = useSelector((state) => state.listings.recall);
+    const mode = useSelector((state: RootState) => state.listings.wallMode);
+    const activities = useSelector((state: RootState) => state.listings.activities);
+    const undoed = useSelector((state: RootState) => state.listings.recall);
 
     return (
         <AppBar position="static" color="primary">
@@ -50,10 +51,10 @@ export function ListingsToolbar() {
                     </IconButton>
                 )}
                 <IconButton color="inherit" aria-label="layout">
-                    {mode ? (
-                        <AppsIcon fontSize="large" onClick={dispatch.bind(null, changeWallMode())} />
+                    {mode === 'table' ? (
+                        <AppsIcon fontSize="large" onClick={dispatch.bind(null, changeWallMode('wall'))} />
                     ) : (
-                        <ListIcon fontSize="large" onClick={dispatch.bind(null, changeWallMode())} />
+                        <ListIcon fontSize="large" onClick={dispatch.bind(null, changeWallMode('table'))} />
                     )}
                 </IconButton>
                 <IconButton color="inherit" aria-label="New Listing">
@@ -65,4 +66,4 @@ export function ListingsToolbar() {
             </Toolbar>
         </AppBar>
     );
-}
+};

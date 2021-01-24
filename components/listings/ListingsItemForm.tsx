@@ -4,7 +4,12 @@ import { DropzoneArea } from 'material-ui-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { ListingsError } from '../../components/listings/ListingsError';
-export function ListingsItemForm({ dfVal }) {
+import { listing } from '../../redux/listings/listingsTypes';
+export type ListingsItemFormProps = {
+    dfVal: listing | null;
+    children: React.ReactNode;
+};
+export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsItemFormProps) => {
     const { control, register, errors, setValue } = useFormContext();
     return (
         <>
@@ -132,4 +137,4 @@ export function ListingsItemForm({ dfVal }) {
             />
         </>
     );
-}
+};

@@ -7,7 +7,15 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { recordState, removeListing, updateDialog, viewDialog } from '../../redux/listings/listingsSlice';
-export function ListingsEdit(props) {
+import { listing } from '../../redux/listings/listingsTypes';
+export type ListingEditProps = {
+    children: React.ReactNode;
+};
+// {
+//     props: listing;
+//     children: React.ReactNode;
+// }
+export const ListingsEdit: React.FunctionComponent = (props: ListingEditProps) => {
     const [open, setOpen] = useState(null);
     const dispatch = useDispatch();
     function handleOpen(e) {
@@ -67,4 +75,4 @@ export function ListingsEdit(props) {
             </FormControl>
         </>
     );
-}
+};

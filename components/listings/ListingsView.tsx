@@ -7,12 +7,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { viewDialog } from '../../redux/listings/listingsSlice';
+import { RootState } from '../../redux/store';
 // export type ListingsViewProps = {
 //     isOpen: boolean;
 // };
-export function ListingsView(): React.ReactNode {
-    const open = useSelector((state) => state.listings.viewMode);
-    const item = useSelector((state) => state.listings.curr);
+export const ListingsView: React.FunctionComponent = () => {
+    const open = useSelector((state: RootState) => state.listings.viewMode);
+    const item = useSelector((state: RootState) => state.listings.curr);
     const dispatch = useDispatch();
     function handleClose() {
         dispatch(viewDialog());
@@ -26,4 +27,4 @@ export function ListingsView(): React.ReactNode {
             </DialogContent>
         </Dialog>
     );
-}
+};

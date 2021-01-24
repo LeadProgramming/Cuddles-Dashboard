@@ -7,14 +7,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { modifyListing, updateDialog } from '../../redux/listings/listingsSlice';
+import { RootState } from '../../redux/store';
 import { ListingsItemForm } from './ListingsItemForm';
 
-export type ListingsUpdateProps = {
-    isOpen: boolean;
-};
-export function ListingsUpdate(): React.ReactNode {
-    const open = useSelector((state) => state.listings.updateMode);
-    const currRow = useSelector((state) => state.listings.curr);
+export const ListingsUpdate: React.FunctionComponent = () => {
+    const open = useSelector((state: RootState) => state.listings.updateMode);
+    const currRow = useSelector((state: RootState) => state.listings.curr);
     const dispatch = useDispatch();
     const methods = useForm();
     const onSubmit = (values) => {
@@ -25,7 +23,7 @@ export function ListingsUpdate(): React.ReactNode {
         formData.append('rating', currRow.rating);
         formData.append('name', values.name);
         formData.append('details', values.details);
-        formData.append('quantity', Number(values.quantity));
+        formData.append('quantity', values.quantity);
         formData.append('price', Number(values.price).toFixed(2));
         formData.append('tags', values.tags);
         formData.append(
@@ -58,4 +56,4 @@ export function ListingsUpdate(): React.ReactNode {
             </FormProvider>
         </Dialog>
     );
-}
+};

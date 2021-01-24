@@ -12,76 +12,27 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { checkListing } from '../../redux/listings/listingsSlice';
+import { RootState } from '../../redux/store';
 import { ListingsEdit } from './ListingsEdit';
-// type Listings = {
-//     field?: string;
-//     headerName?: string;
-//     width: number;
-//     sortable?: boolean;
-//     renderCell?: React.ReactNode;
-// };
-export type ListingsWallProps = {
-    sortBy: string[];
-    types: string[];
-    listings: any;
-};
 
-export function ListingsWall(): React.ReactNode {
-    const listings = useSelector((state) => state.listings.listings);
+export const ListingsWall: React.FunctionComponent = () => {
+    const listings = useSelector((state: RootState) => state.listings.listings);
     const dispatch = useDispatch();
-    const [selected, setSelected] = useState([]);
-    const cols: ColDef[] = [
-        {
-            field: 'img',
-            headerName: 'Image',
-            width: 100,
-            sortable: false,
-            renderCell: function render(itm) {
-                // first upload only.
-                return <img src={itm.value.split(',')[0]} alt={'Cuddles'} width={75} height={75} />;
-            },
-        },
-        { field: 'id', headerName: 'SKU', width: 90 },
-        { field: 'name', headerName: 'Name', width: 100 },
-        { field: 'rating', headerName: 'Rating', width: 100 },
-        { field: 'num_rating', headerName: '# of ratings', width: 100 },
-        { field: 'price', headerName: 'Price $', width: 100 },
-        { field: 'details', headerName: 'Details', width: 100 },
-        { field: 'tags', headerName: 'Tags', width: 100 },
-        { field: 'quantity', headerName: 'Quantity', width: 100 },
-        {
-            field: '-',
-            width: 100,
-            sortable: false,
-            renderCell: function render(load) {
-                return <ListingsEdit {...load.row} />;
-            },
-        },
-    ];
-    const rows = [...listings];
     const selectItm = (e) => {
-        const idx = selected.indexOf(e.target.value);
-        if (idx == -1) {
-            setSelected((prv) => prv.concat(e.target.value));
-        } else {
-            setSelected((prv) => prv.filter((itm) => itm != e.target.value));
-        }
+        dispatch(checkListing(JSON.parse(e.target.value)));
     };
-    useEffect(() => {
-        dispatch(checkListing(selected));
-    }, [selected]);
     return (
         <Box height="80vh" width="100%">
-            <Grid container spacing={1} direction="row" justify="center" wrap="nowrap" style={{ margin: '5px 0' }}>
-                {listings.map((itm, idx) => {
+            <Grid container spacing={1} direction="row" style={{ margin: '5px 0' }}>
+                {listings.map((itm) => {
                     return (
-                        <Grid item key={itm.name}>
+                        <Grid item key={itm.name} md={4} align="center">
                             <Card variant="outlined">
-                                {/* <Checkbox value={itm.id} onChange={selectItm} color="secondary" /> */}
+                                {/* <Checkbox checked={} value={JSON.stringify(itm)} onChange={selectItm} color="secondary" /> */}
                                 <CardMedia
                                     title={itm.name}
                                     image={itm.img.split(',')[0]}
-                                    style={{ width: '250px', height: '250px' }}
+                                    style={{ width: '200px', height: '200px' }}
                                 />
                                 <Grid container direction="column">
                                     <Grid container item direction="column" alignContent="center">
@@ -126,7 +77,6 @@ export function ListingsWall(): React.ReactNode {
                     );
                 })}
             </Grid>
-            {/* <DataGrid rows={rows} columns={cols} rowHeight={100} onSelectionChange={selectRow} checkboxSelection /> */}
         </Box>
     );
-}
+};

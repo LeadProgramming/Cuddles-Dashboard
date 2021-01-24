@@ -11,7 +11,7 @@ export type listing = {
 };
 export type listingsState = {
     listings: listing[];
-    wallMode: boolean;
+    wallMode: string;
     createMode: boolean;
     viewMode: boolean;
     updateMode: boolean;

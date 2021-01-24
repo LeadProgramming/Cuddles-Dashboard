@@ -1,5 +1,8 @@
 import Typography from '@material-ui/core/Typography';
-export function ListingsError({ children }) {
+export type ListingsErrorProps = {
+    children: React.ReactNode;
+};
+export const ListingsError: React.FunctionComponent = ({ children }: ListingsErrorProps) => {
     return (
         <Typography variant="caption" color="error" display="block">
             <span role="img" aria-label="Error">
@@ -8,4 +11,4 @@ export function ListingsError({ children }) {
             {children}
         </Typography>
     );
-}
+};

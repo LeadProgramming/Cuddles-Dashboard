@@ -4,23 +4,11 @@ import { ColDef, DataGrid } from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { checkListing } from '../../redux/listings/listingsSlice';
+import { RootState } from '../../redux/store';
 import { ListingsEdit } from './ListingsEdit';
 
-// type Listings = {
-//     field?: string;
-//     headerName?: string;
-//     width: number;
-//     sortable?: boolean;
-//     renderCell?: React.ReactNode;
-// };
-export type ListingsTableProps = {
-    sortBy: string[];
-    types: string[];
-    listings: any;
-};
-
-export function ListingsTable(): React.ReactNode {
-    const listings = useSelector((state) => state.listings.listings);
+export const ListingsTable: React.FunctionComponent = () => {
+    const listings = useSelector((state: RootState) => state.listings.listings);
     const dispatch = useDispatch();
     const cols: ColDef[] = [
         {
@@ -59,4 +47,4 @@ export function ListingsTable(): React.ReactNode {
             <DataGrid rows={rows} columns={cols} rowHeight={100} onSelectionChange={selectRow} checkboxSelection />
         </Box>
     );
-}
+};
