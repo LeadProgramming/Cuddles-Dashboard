@@ -8,7 +8,7 @@ module.exports = {
             jsx: true,
         },
     },
-    plugins: ['simple-import-sort'],
+    plugins: ['simple-import-sort', 'jest'],
     settings: {
         react: {
             version: 'detect',
@@ -19,6 +19,7 @@ module.exports = {
         amd: true,
         node: true,
         jest: true,
+        'jest/globals': true,
     },
     extends: [
         'eslint:recommended',
@@ -28,6 +29,8 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
         'prettier/@typescript-eslint',
+        'plugin:jest/recommended',
+        'plugin:jest/style',
         'plugin:prettier/recommended', // Make sure this is always the last element in the array.
     ],
     rules: {
@@ -45,5 +48,10 @@ module.exports = {
                 aspects: ['invalidHref', 'preferButton'],
             },
         ],
+        'jest/no-disabled-tests': 'warn',
+        'jest/no-focused-tests': 'error',
+        'jest/no-identical-title': 'error',
+        'jest/prefer-to-have-length': 'warn',
+        'jest/valid-expect': 'error',
     },
 };

@@ -14,6 +14,4 @@ export default {
 const Template: Story<ListingsActivitiesProps> = (args) => <ListingsActivities {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {
-    isOpen: true,
-};
+Default.args = {};

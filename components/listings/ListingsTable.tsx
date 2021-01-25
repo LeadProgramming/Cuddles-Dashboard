@@ -43,7 +43,7 @@ export const ListingsTable: React.FunctionComponent = () => {
         dispatch(checkListing(e.rowIds));
     };
     return (
-        <Box height="80vh" width="100%">
+        <Box height="85vh" width="100%">
             <DataGrid rows={rows} columns={cols} rowHeight={100} onSelectionChange={selectRow} checkboxSelection />
         </Box>
     );
