@@ -26,7 +26,7 @@ export const ListingsWall: React.FunctionComponent = () => {
             <Grid container spacing={1} direction="row" style={{ margin: '5px 0' }}>
                 {listings.map((itm) => {
                     return (
-                        <Grid item key={itm.name} md={4} align="center">
+                        <Grid item key={itm.name} md={4} style={{ textAlign: 'center' }}>
                             <Card variant="outlined">
                                 {/* <Checkbox checked={} value={JSON.stringify(itm)} onChange={selectItm} color="secondary" /> */}
                                 <CardMedia

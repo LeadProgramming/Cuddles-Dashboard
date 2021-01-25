@@ -19,9 +19,9 @@ Default.args = {
     navNames: [
         { name: 'home' },
         { name: 'metrics' },
-        { name: 'orders', subnames: ['awaiting', 'shipped', 'arrived', 'returns', 'canceled'] },
-        { name: 'listings', subnames: ['teddy bears', 'food plushies', 'animals'] },
-        { name: 'customers', subnames: ['guests', 'users'] },
+        { name: 'orders' },
+        { name: 'listings' },
+        { name: 'customers' },
         // { name: 'email', subNames: ['inbox', 'sent', 'deleted'] },
     ],
 };

@@ -19,6 +19,6 @@ export type listingsState = {
     actMode: boolean;
     checked: listing[];
     curr: listing;
-    activities: unknown[];
-    recall: unknown[];
+    activities: any[];
+    recall: any[];
 };

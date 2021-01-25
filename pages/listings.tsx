@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import { ListingsActivities } from '../components/listings/ListingsActivities';
 import { ListingsCreate } from '../components/listings/ListingsCreate';
 import { ListingsDelete } from '../components/listings/ListingsDelete';
 import { ListingsTable } from '../components/listings/ListingsTable';
@@ -24,10 +23,11 @@ const useStyles = makeStyles(() =>
     }),
 );
 export type ListingProps = {
-    navnames: any;
+    navNames: any;
     listings: any;
+    children: React.ReactNode;
 };
-export default function Listings({ navNames }: ListingProps): React.ReactNode {
+const Listings: React.FunctionComponent = ({ navNames }: ListingProps) => {
     const classes = useStyles();
     const wallMode = useSelector((state: RootState) => state.listings.wallMode);
     const dispatch = useDispatch();
@@ -61,7 +61,7 @@ export default function Listings({ navNames }: ListingProps): React.ReactNode {
                 <title>Cuddles | Listings</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <SideNav navNames={navNames} />
+            {/* <SideNav {...navNames} /> */}
             <main className={classes.content}>
                 <ListingsToolbar />
                 {wallMode === 'wall' ? <ListingsWall /> : <ListingsTable />}
@@ -74,8 +74,8 @@ export default function Listings({ navNames }: ListingProps): React.ReactNode {
             <ListingsDelete />
         </div>
     );
-}
-
+};
+export default Listings;
 // export async function getStaticProps() {
 //     // Get external data from the file system, API, DB, etc.
 //     const data = ...

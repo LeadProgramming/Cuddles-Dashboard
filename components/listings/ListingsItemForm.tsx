@@ -6,10 +6,16 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { ListingsError } from '../../components/listings/ListingsError';
 import { listing } from '../../redux/listings/listingsTypes';
 export type ListingsItemFormProps = {
-    dfVal: listing | null;
     children: React.ReactNode;
-};
-export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsItemFormProps) => {
+} & listing;
+export const ListingsItemForm: React.FunctionComponent = ({
+    img,
+    name,
+    price,
+    quantity,
+    details,
+    tags,
+}: ListingsItemFormProps) => {
     const { control, register, errors, setValue } = useFormContext();
     return (
         <>
@@ -40,7 +46,7 @@ export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsIte
                         showPreviews
                         showPreviewsInDropzone={false}
                         showFileNamesInPreview
-                        initialFiles={dfVal?.img?.split(',')}
+                        initialFiles={img?.split(',')}
                         // useChipsForPreview
                     />
                 )}
@@ -58,7 +64,7 @@ export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsIte
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                defaultValue={dfVal?.name}
+                defaultValue={name}
             />
             <ErrorMessage
                 errors={errors}
@@ -78,7 +84,7 @@ export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsIte
                 margin="normal"
                 type="number"
                 inputProps={{ min: '0.00', step: '0.01' }}
-                defaultValue={dfVal?.price}
+                defaultValue={price}
             />
             <ErrorMessage
                 errors={errors}
@@ -98,7 +104,7 @@ export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsIte
                 margin="normal"
                 type="number"
                 inputProps={{ min: '0' }}
-                defaultValue={dfVal?.quantity}
+                defaultValue={quantity}
             />
             <ErrorMessage
                 errors={errors}
@@ -115,7 +121,7 @@ export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsIte
                 multiline
                 rows={5}
                 margin="normal"
-                defaultValue={dfVal?.details}
+                defaultValue={details}
             />
             <ErrorMessage
                 errors={errors}
@@ -133,7 +139,7 @@ export const ListingsItemForm: React.FunctionComponent = ({ dfVal }: ListingsIte
                 margin="normal"
                 // onKeyPress={handleTags}
                 helperText={'Tags seperated by comma.'}
-                defaultValue={dfVal?.tags}
+                defaultValue={tags}
             />
         </>
     );

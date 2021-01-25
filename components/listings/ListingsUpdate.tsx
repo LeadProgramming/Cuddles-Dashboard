@@ -42,7 +42,7 @@ export const ListingsUpdate: React.FunctionComponent = () => {
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                     <DialogTitle id="">Update Listing</DialogTitle>
                     <DialogContent>
-                        <ListingsItemForm dfVal={currRow} />
+                        <ListingsItemForm {...currRow} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose} color="default">

@@ -1,7 +1,7 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import Listings, { ListingProps } from '../../pages/Listings';
+import Listings from '../../pages/Listings';
 
 export default {
     title: 'pages/Listings',
@@ -11,7 +11,7 @@ export default {
     // },
 } as Meta;
 
-const Template: Story<ListingsProps> = (args) => <Listings {...args} />;
+const Template: Story = (args) => <Listings {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

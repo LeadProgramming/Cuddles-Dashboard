@@ -18,7 +18,8 @@ export const ListingsTable: React.FunctionComponent = () => {
             sortable: false,
             renderCell: function render(itm) {
                 // first upload only.
-                return <img src={itm.value.split(',')[0]} alt={'Cuddles'} width={75} height={75} />;
+                return <img src={JSON.stringify(itm.value).split(',')[0]} alt={'Cuddles'} width={75} height={75} />;
+                // return <img src={itm.value.split(',')[0]} alt={'Cuddles'} width={75} height={75} />;
             },
         },
         { field: 'id', headerName: 'SKU', width: 90 },
@@ -34,7 +35,7 @@ export const ListingsTable: React.FunctionComponent = () => {
             width: 100,
             sortable: false,
             renderCell: function render(load) {
-                return <ListingsEdit {...load.row} />;
+                return <ListingsEdit {...(load.row as any)} />;
             },
         },
     ];
