@@ -8,11 +8,16 @@ import Typography from '@material-ui/core/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { deleteDialog, recordState, recycleListing } from '../../redux/listings/listingsSlice';
+import { listing } from '../../redux/listings/listingsTypes';
 import { RootState } from '../../redux/store';
-
-export const ListingsDelete: React.FunctionComponent = () => {
-    const checked = useSelector((state: RootState) => state.listings.checked);
-    const open = useSelector((state: RootState) => state.listings.deleteMode);
+export type ListingsDeleteProp = {
+    sbOpen: boolean;
+    sbChecked: listing[];
+    children: React.ReactNode;
+};
+export const ListingsDelete: React.FunctionComponent = ({ sbOpen, sbChecked }: ListingsDeleteProp) => {
+    const listings = useSelector((state: RootState) => sbChecked || state.listings.listings);
+    const open = useSelector((state: RootState) => sbOpen || state.listings.deleteMode);
     const dispatch = useDispatch();
     function handleClose() {
         dispatch(deleteDialog());
@@ -30,11 +35,15 @@ export const ListingsDelete: React.FunctionComponent = () => {
                     <DialogContentText>Warning: Deleting listing(s) will be irreversible!</DialogContentText>
                     <DialogContentText>
                         Deleting:{' '}
-                        {checked.map((i) => (
-                            <Typography key={i.name}>
-                                SKU: {i.id} Name: {i.name}{' '}
-                            </Typography>
-                        ))}
+                        {listings.map((i) => {
+                            if (i.checked) {
+                                return (
+                                    <Typography key={i.name}>
+                                        SKU: {i.id} Name: {i.name}{' '}
+                                    </Typography>
+                                );
+                            }
+                        })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -64,8 +73,8 @@ export const ListingsDelete: React.FunctionComponent = () => {
         );
     }
     return (
-        <Dialog open={open} onClose={handleClose} aria-labelledby="Create a Listing">
-            {checked.length ? <Deletable /> : <UnDeletable />}
+        <Dialog open={open} onClose={handleClose} aria-labelledby="Delete a Listing">
+            {listings.filter((i) => i.checked).length ? <Deletable /> : <UnDeletable />}
         </Dialog>
     );
 };

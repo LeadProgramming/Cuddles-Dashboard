@@ -17,15 +17,9 @@ export const ListingsItemForm: React.FunctionComponent = ({
     tags,
 }: ListingsItemFormProps) => {
     const { control, register, errors, setValue } = useFormContext();
+
     return (
         <>
-            {/* // displays error messages up top. */}
-            {/* {Object.entries(errors).map(([key, value]) => (
-                <ErrorMessage key={value.message} errors={errors} name={key} as={ListingsError}>
-                    {value.message}
-                </ErrorMessage>
-            ))} */}
-
             <ErrorMessage
                 errors={errors}
                 name={'img'}
@@ -40,16 +34,20 @@ export const ListingsItemForm: React.FunctionComponent = ({
                         filesLimit={6}
                         onChange={(files) => {
                             //validation needs work.
-                            setValue('img', files);
+                            setValue(
+                                'img',
+                                files.map((i) => URL.createObjectURL(i)),
+                            );
                         }}
                         dropzoneText={'Upload pictures here.'}
                         showPreviews
                         showPreviewsInDropzone={false}
                         showFileNamesInPreview
-                        initialFiles={img?.split(',')}
+                        initialFiles={img}
                         // useChipsForPreview
                     />
                 )}
+                defaultValue={img}
             />
             <ErrorMessage
                 errors={errors}
@@ -129,7 +127,9 @@ export const ListingsItemForm: React.FunctionComponent = ({
                 render={({ message }) => <ListingsError>{message}</ListingsError>}
             />
             <TextField
-                inputRef={register}
+                inputRef={register({
+                    setValueAs: (value) => value.split(','),
+                })}
                 id="tags"
                 label="tags"
                 name="tags"
@@ -137,7 +137,6 @@ export const ListingsItemForm: React.FunctionComponent = ({
                 fullWidth
                 multiline
                 margin="normal"
-                // onKeyPress={handleTags}
                 helperText={'Tags seperated by comma.'}
                 defaultValue={tags}
             />

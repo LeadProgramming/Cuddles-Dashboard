@@ -1,12 +1,12 @@
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ListingsToolbar } from '../../../components/listings/ListingsToolbar';
 import { MainToolbar } from '../../../components/MainToolbar';
+import { OrdersToolbar } from '../../../components/orders/OrdersToolbar';
 
 export default {
-    title: 'components/listings/ListingsToolbar',
-    component: ListingsToolbar,
+    title: 'components/orders/OrdersToolbar',
+    component: OrdersToolbar,
     // argTypes: {
     //     backgroundColor: { control: 'color' },
     // },
@@ -15,12 +15,9 @@ export default {
 const Template: Story = (args) => {
     return (
         <MainToolbar>
-            <ListingsToolbar {...args} />
+            <OrdersToolbar {...args} />
         </MainToolbar>
     );
 };
-
 export const Default = Template.bind({});
-Default.args = {
-    isOpen: true,
-};
+Default.args = {};

@@ -1,82 +1,39 @@
-import { CardActions, Checkbox, Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import Chip from '@material-ui/core/Chip';
-import Container from '@material-ui/core/Container';
+import { Checkbox, Container, Typography, useTheme } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import Rating from '@material-ui/lab/Rating';
-import { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { checkListing } from '../../redux/listings/listingsSlice';
 import { RootState } from '../../redux/store';
-import { ListingsEdit } from './ListingsEdit';
+import { ListingsWallItem } from './ListingsWallItem';
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        margin: '10px auto',
+    },
+}));
 
 export const ListingsWall: React.FunctionComponent = () => {
-    const listings = useSelector((state: RootState) => state.listings.listings);
     const dispatch = useDispatch();
-    const selectItm = (e) => {
-        dispatch(checkListing(JSON.parse(e.target.value)));
-    };
+    const theme = useTheme();
+    const listings = useSelector((state: RootState) => state.listings.listings);
+    const classes = useStyles(theme);
     return (
-        <Box height="80vh" width="100%">
-            <Grid container spacing={1} direction="row" style={{ margin: '5px 0' }}>
+        <Container maxWidth={'lg'} className={classes.container}>
+            <Grid container spacing={1} justify="center">
                 {listings.map((itm) => {
                     return (
-                        <Grid item key={itm.name} md={4} style={{ textAlign: 'center' }}>
-                            <Card variant="outlined">
-                                {/* <Checkbox checked={} value={JSON.stringify(itm)} onChange={selectItm} color="secondary" /> */}
-                                <CardMedia
-                                    title={itm.name}
-                                    image={itm.img.split(',')[0]}
-                                    style={{ width: '200px', height: '200px' }}
-                                />
-                                <Grid container direction="column">
-                                    <Grid container item direction="column" alignContent="center">
-                                        <Typography variant="h5" color="initial">
-                                            {itm.name}
-                                        </Typography>
-                                        <Typography variant="h6" color="initial">
-                                            ${itm.price}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid container item justify="center">
-                                        <Rating
-                                            name={`${itm.name}Rating`}
-                                            value={itm.rating}
-                                            max={5}
-                                            precision={0.5}
-                                            icon={<FavoriteIcon fontSize="inherit" />}
-                                            size="small"
-                                            readOnly
-                                            style={{ marginRight: '5px' }}
-                                        />
-                                        <Typography variant="subtitle1" color="initial">
-                                            {itm.rating}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid container item justify="center">
-                                        <Typography variant="subtitle1" color="initial">
-                                            {itm.num_rating} ratings
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                {/* <Typography variant="subtitle1" color="initial">
-                                        {itm.tags.map((tag) => (
-                                            <Chip key={tag} label={tag} />
-                                        ))}
-                                    </Typography> */}
-                                <CardActions style={{ justifyContent: 'center' }}>
-                                    <ListingsEdit {...itm} />
-                                </CardActions>
-                            </Card>
-                        </Grid>
+                        <>
+                            <ListingsWallItem key={itm.name} {...itm} />
+                        </>
                     );
                 })}
             </Grid>
-        </Box>
+            {listings.filter((i) => i.checked).length > 0 && (
+                <Typography paragraph>
+                    {listings.filter((i) => i.checked).length} of {listings.length} selected.
+                </Typography>
+            )}
+        </Container>
     );
 };

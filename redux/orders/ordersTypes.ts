@@ -1,4 +1,4 @@
-export type listing = {
+export type orders = {
     img: string[];
     id: number;
     name: string;
@@ -10,8 +10,8 @@ export type listing = {
     quantity: number;
     checked: boolean;
 };
-export type listingsState = {
-    listings: listing[];
+export type ordersState = {
+    orders: orders[];
     displayMode: string;
     createMode: boolean;
     viewMode: boolean;

@@ -6,7 +6,7 @@ export const listingsSlice = createSlice({
     initialState: {
         listings: [
             {
-                img: 'https://cdn3.volusion.com/9nxdj.fchy5/v/vspfiles/photos/AR-01779-2.jpg?v-cache=1602075128',
+                img: ['/img/baek.jpg'],
                 id: 1,
                 name: 'David',
                 rating: (4.8).toFixed(1),
@@ -17,7 +17,7 @@ export const listingsSlice = createSlice({
                 quantity: 100,
             },
             {
-                img: 'https://cdn3.volusion.com/9nxdj.fchy5/v/vspfiles/photos/AR-01779-2.jpg?v-cache=1602075128',
+                img: ['/img/earlGrey.jpg', '/img/earlGrey2.jpg', '/img/earlGrey3.jpg'],
                 id: 2,
                 name: 'Diana',
                 rating: (0).toFixed(1),
@@ -28,7 +28,7 @@ export const listingsSlice = createSlice({
                 quantity: 100,
             },
             {
-                img: 'https://cdn3.volusion.com/9nxdj.fchy5/v/vspfiles/photos/AR-01779-2.jpg?v-cache=1602075128',
+                img: ['/img/kai.jpg', '/img/kai2.jpg', '/img/kai3.jpg'],
                 id: 3,
                 name: 'Phuong',
                 rating: (4.75).toFixed(1),
@@ -39,23 +39,25 @@ export const listingsSlice = createSlice({
                 quantity: 100,
             },
         ],
-        wallMode: 'table',
         createMode: false,
         viewMode: false,
         updateMode: false,
         deleteMode: false,
-        actMode: false,
-        checked: [],
+        displayMode: 'table',
         curr: {},
+        //undo & redo syntax
         activities: [],
         recall: [],
     } as listingsState,
     reducers: {
-        changeWallMode(state, action: PayloadAction<'table' | 'wall' | 'drop'>) {
-            state.wallMode = action.payload;
-        },
-        actDialog(state) {
-            state.actMode = !state.actMode;
+        changeDisplay(state) {
+            if (state.displayMode == 'table') {
+                state.displayMode = 'gallery';
+            } else {
+                state.displayMode = 'table';
+            }
+            //removes all checks from checkboxes.
+            state.listings.map((i) => (i.checked = false));
         },
         createDialog(state) {
             state.createMode = !state.createMode;
@@ -73,39 +75,30 @@ export const listingsSlice = createSlice({
         deleteDialog(state) {
             state.deleteMode = !state.deleteMode;
         },
-        modifyListing(state, action: PayloadAction<Iterable<readonly any[]>>) {
-            //very ugly code
-            const idx = state.listings.map((i) => i.id).indexOf(Number(Object.fromEntries(action.payload).id));
+        modifyListing(state, action: PayloadAction<Iterable<any[]>>) {
+            //tags
+            action.payload[7][1] = action.payload[7][1].split(',');
+            //img
+            action.payload[8][1] = action.payload[8][1].split(',');
+            const idx = state.listings.map((i) => String(i.id)).indexOf(Object.fromEntries(action.payload).id);
             state.listings[idx] = Object.fromEntries(action.payload);
         },
-        checkListing(state, action: PayloadAction<number[]>) {
-            const found = [];
-            //material ui api is problematic
-            //get all the selected listings for recycling.
-            for (const i of action.payload) {
-                found.push(state.listings.find((itm) => itm.id == i));
-            }
-            state.checked = found;
+        checkListing(state, action: PayloadAction<any>) {
+            //pc ?? mobile
+            const idx = action.payload.data?.id ?? action.payload?.value;
+            const check = action.payload?.isSelected ?? action.payload?.checked;
+            const currIdx = state.listings.map((i) => i.id).indexOf(Number(idx));
+            state.listings[currIdx].checked = check;
         },
         recycleListing(state) {
-            const tmp = [];
-            for (const i of state.listings) {
-                let dontKeep = false;
-                for (const j of state.checked) {
-                    if (i.id === j.id) {
-                        dontKeep = true;
-                        break;
-                    }
-                }
-                if (!dontKeep) {
-                    tmp.push(i);
-                }
-            }
-            state.listings = tmp;
-            state.checked = [];
+            state.listings = state.listings.filter((i) => !i.checked);
             state.deleteMode = false;
         },
-        createListing(state, action: PayloadAction<Iterable<readonly any[]>>) {
+        createListing(state, action: PayloadAction<Iterable<any[]>>) {
+            //tags
+            action.payload[7][1] = action.payload[7][1].split(',');
+            //imgs
+            action.payload[8][1] = action.payload[8][1].split(',');
             state.listings.push(Object.fromEntries(action.payload));
         },
         removeListing(state, action: PayloadAction<listing>) {
@@ -126,9 +119,8 @@ export const listingsSlice = createSlice({
     },
 });
 export const {
-    changeWallMode,
+    changeDisplay,
     createDialog,
-    actDialog,
     viewDialog,
     updateDialog,
     deleteDialog,

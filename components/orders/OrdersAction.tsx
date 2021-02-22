@@ -6,14 +6,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { recordState, removeListing, updateDialog, viewDialog } from '../../redux/listings/listingsSlice';
-import { listing } from '../../redux/listings/listingsTypes';
-type ListingsEditProp =
+import { cancelDialog, recordState, viewDialog } from '../../redux/orders/ordersSlice';
+import { orders } from '../../redux/orders/ordersTypes';
+
+type OrdersActionProp =
     | ({
           children: React.ReactNode;
-      } & listing)
+      } & orders)
     | null;
-export const ListingsEdit: React.FunctionComponent = (props: ListingsEditProp) => {
+export const OrdersAction: React.FunctionComponent = (props: OrdersActionProp) => {
     const [open, setOpen] = useState(null);
     const dispatch = useDispatch();
     function handleOpen(e) {
@@ -22,15 +23,11 @@ export const ListingsEdit: React.FunctionComponent = (props: ListingsEditProp) =
     function handleClose() {
         setOpen(null);
     }
-    function handleViewListing() {
+    function handleViewOrder() {
         dispatch(viewDialog(props));
     }
-    function handleUpdateListing() {
-        dispatch(updateDialog(props));
-    }
-    function handleRemoveListing() {
-        dispatch(recordState());
-        dispatch(removeListing(props));
+    function handleCancelOrder() {
+        dispatch(cancelDialog(props));
     }
     return (
         <>
@@ -42,7 +39,7 @@ export const ListingsEdit: React.FunctionComponent = (props: ListingsEditProp) =
                 size={'medium'}
                 onClick={handleOpen}
             >
-                Edit
+                Action
             </Button>
             <FormControl>
                 <Menu
@@ -59,14 +56,11 @@ export const ListingsEdit: React.FunctionComponent = (props: ListingsEditProp) =
                         horizontal: 'center',
                     }}
                 >
-                    <MenuItem value={'viewListing'} onClick={handleViewListing}>
-                        View Listing
+                    <MenuItem value={'viewOrder'} onClick={handleViewOrder}>
+                        View Order
                     </MenuItem>
-                    <MenuItem value={'updateListing'} onClick={handleUpdateListing}>
-                        Update Listing
-                    </MenuItem>
-                    <MenuItem value={'removeListing'} onClick={handleRemoveListing}>
-                        Remove Listing
+                    <MenuItem value={'cancelOrder'} onClick={handleCancelOrder}>
+                        Cancel Order
                     </MenuItem>
                 </Menu>
             </FormControl>
